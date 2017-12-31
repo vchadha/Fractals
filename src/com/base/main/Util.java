@@ -6,6 +6,8 @@ public class Util {
     public static final int PADDING = 20;
     public static final int Y_OFFSET = 30;
 
+    public static final String DOCUMENT_FILTER = "Ff-+";
+
     public static final Dimension DISPLAY_DIMENSION = new Dimension(800, 800);
 
     public static final Dimension START_BUTTON_DIMENSION = new Dimension(75, 30);

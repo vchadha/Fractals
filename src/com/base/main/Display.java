@@ -1,6 +1,7 @@
 package com.base.main;
 
 import javax.swing.*;
+import javax.swing.text.AbstractDocument;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,7 +21,9 @@ public class Display extends JFrame implements ActionListener, KeyListener {
         this.displayName = displayName;
         panel = new JPanel();
         //TODO: figure out how this works
-        axiom = new JFormattedTextField();
+        axiom = new JTextField("F f - +");
+        ((AbstractDocument) axiom.getDocument()).setDocumentFilter(new FractalDocumentFilter());
+
         start = new JButton("Start");
     }
 
@@ -68,8 +71,8 @@ public class Display extends JFrame implements ActionListener, KeyListener {
             //Entity.move
         }
 
-//        revalidate();
-//        repaint();
+        revalidate();
+        repaint();
     }
 
     @Override
