@@ -1,4 +1,11 @@
 package com.base.main;
 
-public class Draw {
+import java.awt.Graphics;
+
+public class Draw extends Display {
+
+    protected static void draw(Graphics g) {
+
+    }
 }
+
