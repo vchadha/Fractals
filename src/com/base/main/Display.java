@@ -9,7 +9,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class Display extends JFrame implements ActionListener, KeyListener {
-    //TODO: axiom input, start button, iterator bar, add production button, production is panel with 2 elements - replace and string to replace?
+    //TODO: axiom input, start button, iterator bar, add production button, production
+    //TODO: add startPos field, step, angle, hide button etc.
     private String displayName;
     private static JPanel panel;
     private static JTextField axiom;
@@ -66,9 +67,8 @@ public class Display extends JFrame implements ActionListener, KeyListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == start) {
-            //Get text from panels and pass as parameters
-            //Draw.addLine
-            //Entity.move
+            PathManager.reset();
+            PathManager.updateEntity(axiom.getText());
         }
 
         revalidate();
@@ -84,7 +84,6 @@ public class Display extends JFrame implements ActionListener, KeyListener {
     public void keyReleased(KeyEvent e) {
         e.consume();
     }
-
 
     @Override
     public void keyTyped(KeyEvent e) {
