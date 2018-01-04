@@ -1,15 +1,15 @@
 package com.base.main;
 
 public class Entity {
-    private float xPos;
-    private float yPos;
-    private float step;
-    private float alpha;
-    private float delta;
+    private int xPos;
+    private int yPos;
+    private int step;
+    private int alpha;
+    private int delta;
 
     public Entity() { }
 
-    public Entity(float xPos, float yPos, float step, float alpha, float delta) {
+    public Entity(int xPos, int yPos, int step, int alpha, int delta) {
         this.xPos = xPos;
         this.yPos = yPos;
         this.step = step;
@@ -18,55 +18,55 @@ public class Entity {
     }
 
     public void move() {
-        xPos += step * Math.cos(Math.toRadians(alpha));
-        yPos += step * Math.sin(Math.toRadians(alpha));
+        xPos -= step * Math.cos(Math.toRadians(alpha));
+        yPos -= step * Math.sin(Math.toRadians(alpha));
     }
 
     public void rotateClockwise() {
-        alpha -= delta;
-    }
-
-    public void rotateCounterClockwise() {
         alpha += delta;
     }
 
-    public float getxPos() {
+    public void rotateCounterClockwise() {
+        alpha -= delta;
+    }
+
+    public int getxPos() {
         return xPos;
     }
 
-    public void setxPos(float xPos) {
+    public void setxPos(int xPos) {
         this.xPos = xPos;
     }
 
-    public float getyPos() {
+    public int getyPos() {
         return yPos;
     }
 
-    public void setyPos(float yPos) {
+    public void setyPos(int yPos) {
         this.yPos = yPos;
     }
 
-    public float getStep() {
+    public int getStep() {
         return step;
     }
 
-    public void setStep(float step) {
+    public void setStep(int step) {
         this.step = step;
     }
 
-    public float getAlpha() {
+    public int getAlpha() {
         return alpha;
     }
 
-    public void setAlpha(float alpha) {
+    public void setAlpha(int alpha) {
         this.alpha = alpha;
     }
 
-    public float getDelta() {
+    public int getDelta() {
         return delta;
     }
 
-    public void setDelta(float delta) {
+    public void setDelta(int delta) {
         this.delta = delta;
     }
 }

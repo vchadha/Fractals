@@ -57,8 +57,8 @@ public class Util {
             TEXT_DIMENSION.width + PADDING, PRODUCTION_PLUS_POSITION.y + 30);
 
     public static final Point DEFAULT_ENTITY_POSITION = new Point(DISPLAY_DIMENSION.width / 2, DISPLAY_DIMENSION.height / 2);
-    public static final float ENTITY_ANGLE = 90;
-    public static final float ENTITY_STEP = 20;
-    public static final float ENTITY_DELTA = 90;
+    public static final int ENTITY_ANGLE = 90;
+    public static final int ENTITY_STEP = 20;
+    public static final int ENTITY_DELTA = 90;
 
 }

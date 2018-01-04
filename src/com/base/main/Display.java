@@ -4,38 +4,45 @@ import javax.swing.*;
 import javax.swing.text.AbstractDocument;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.HashMap;
 
+//TODO: change from static to non-static? also dont forget to pass start positions -> gray out fields after start
 public class Display extends JFrame implements ActionListener, MouseListener {
     private String displayName;
     private static JPanel panel;
 
-    protected static JTextField axiom;
-    protected static JTextField iteration;
+    private static HashMap<String, String> productions;
 
-    protected static JTextField production_F;
-    protected static JTextField production_f;
-    protected static JTextField production_Plus;
-    protected static JTextField production_Minus;
+    private static JTextField axiom;
+    private static JTextField iteration;
 
-    protected static JTextField startXPos;
-    protected static JTextField startYPos;
-    protected static JTextField step;
-    protected static JTextField startAngle;
-    protected static JTextField delta;
+    private static JTextField production_F;
+    private static JTextField production_f;
+    private static JTextField production_Plus;
+    private static JTextField production_Minus;
 
-    protected static JCheckBox hideButtons;
+    private static JTextField startXPos;
+    private static JTextField startYPos;
+    private static JTextField step;
+    private static JTextField startAngle;
+    private static JTextField delta;
 
-    protected static JButton start;
-    protected static JButton reset;
-    protected static JButton next;
-    protected static JButton previous;
-    protected static JButton editEntity;
+    private static JCheckBox hideButtons;
+
+    private static JButton start;
+    //TODO: implement
+    private static JButton reset;
+    private static JButton next;
+    private static JButton previous;
+    private static JButton editEntity;
 
     public Display() {}
 
     public Display(String displayName) {
         this.displayName = displayName;
         panel = new JPanel();
+
+        productions = new HashMap<>();
 
         axiom = new JTextField("F f - +");
         iteration = new JTextField("1", 1);
@@ -250,9 +257,40 @@ public class Display extends JFrame implements ActionListener, MouseListener {
             next.setVisible(true);
             previous.setVisible(true);
 
-            //TODO: probably should move to method and call from here, next, and prev
+            if (production_F.getText().equals("Production F")) {
+                productions.put("F", "F");
+            } else {
+                productions.put("F", production_F.getText());
+            }
+
+            if (production_f.getText().equals("Production f")) {
+                productions.put("f", "f");
+            } else {
+                productions.put("f", production_f.getText());
+            }
+
+            if (production_Minus.getText().equals("Production -")) {
+                productions.put("-", "-");
+            } else {
+                productions.put("-", production_Minus.getText());
+            }
+
+            if (production_Plus.getText().equals("Production +")) {
+                productions.put("+", "+");
+            } else {
+                productions.put("+", production_Plus.getText());
+            }
+
             PathManager.reset();
-            PathManager.updateEntity(axiom.getText());
+            PathManager.updateEntity(axiom.getText(), iteration.getText());
+        }
+
+        if (e.getSource() == next) {
+            PathManager.next(productions);
+        }
+
+        if (e.getSource() == previous) {
+            PathManager.previous();
         }
 
         if (e.getSource() == hideButtons) {
@@ -263,12 +301,8 @@ public class Display extends JFrame implements ActionListener, MouseListener {
             }
         }
 
-        if (e.getSource() == next) {}
-
-        if (e.getSource() == previous) {}
-
         if (e.getSource() == editEntity) {
-            if (editEntity.getText() == "Edit Entity") {
+            if (editEntity.getText().equals("Edit Entity")) {
                 editEntity.setText("Hide Entity");
                 hideEntity(true);
             } else {
