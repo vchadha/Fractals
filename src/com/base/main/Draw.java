@@ -1,6 +1,9 @@
 package com.base.main;
 
-import java.awt.*;
+import com.base.assets.Line;
+
+import java.awt.Color;
+import java.awt.Graphics;
 
 public class Draw extends Display {
 

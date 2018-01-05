@@ -1,5 +1,9 @@
 package com.base.main;
 
+import com.base.assets.Entity;
+import com.base.assets.Line;
+import com.base.utilities.Util;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -11,15 +15,17 @@ public class PathManager {
     public static ArrayList<Line> lines;
 
     static {
-        //Replace with defaults
-        entity = new Entity(Util.DISPLAY_DIMENSION.width / 2, Util.DISPLAY_DIMENSION.height / 2,
-                5, 90, 90);
+        entity = new Entity(Util.DEFAULT_ENTITY_POSITION.x, Util.DEFAULT_ENTITY_POSITION.y,
+                Util.ENTITY_STEP, Util.ENTITY_ANGLE, Util.ENTITY_DELTA);
         axioms = new ArrayList<>();
         lines = new ArrayList<>();
         currIter = 0;
     }
 
-    public static void updateEntity(String axiom, String iteration_Str) {
+    public static void updateEntity(String axiom, String iteration_Str, int startAngle, int delta) {
+        entity.setAlpha(startAngle);
+        entity.setDelta(delta);
+
         iteration = Integer.parseInt(iteration_Str);
         axioms.add(axiom);
 

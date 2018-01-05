@@ -1,4 +1,4 @@
-package com.base.main;
+package com.base.assets;
 
 public class Entity {
     private int xPos;
@@ -6,8 +6,6 @@ public class Entity {
     private int step;
     private int alpha;
     private int delta;
-
-    public Entity() { }
 
     public Entity(int xPos, int yPos, int step, int alpha, int delta) {
         this.xPos = xPos;

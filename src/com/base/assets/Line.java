@@ -1,4 +1,4 @@
-package com.base.main;
+package com.base.assets;
 
 public class Line {
     private int startX;

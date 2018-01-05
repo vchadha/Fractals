@@ -1,40 +1,40 @@
 package com.base.main;
 
+import com.base.utilities.FractalDocumentFilter;
+import com.base.utilities.IntegerDocumentFilter;
+import com.base.utilities.Util;
+
 import javax.swing.*;
 import javax.swing.text.AbstractDocument;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.HashMap;
 
-//TODO: change from static to non-static? also dont forget to pass start positions -> gray out fields after start
+//TODO: have dynamic resizing using shifts; Improve efficiency in fractal patterns by repeating tiles?
 public class Display extends JFrame implements ActionListener, MouseListener {
     private String displayName;
-    private static JPanel panel;
+    private JPanel panel;
 
-    private static HashMap<String, String> productions;
+    private HashMap<String, String> productions;
 
-    private static JTextField axiom;
-    private static JTextField iteration;
+    private JTextField axiom;
+    private JTextField iteration;
 
-    private static JTextField production_F;
-    private static JTextField production_f;
-    private static JTextField production_Plus;
-    private static JTextField production_Minus;
+    private JTextField production_F;
+    private JTextField production_f;
+    private JTextField production_Plus;
+    private JTextField production_Minus;
 
-    private static JTextField startXPos;
-    private static JTextField startYPos;
-    private static JTextField step;
-    private static JTextField startAngle;
-    private static JTextField delta;
+    private JTextField startAngle;
+    private JTextField delta;
 
-    private static JCheckBox hideButtons;
+    private JCheckBox hideButtons;
 
-    private static JButton start;
-    //TODO: implement
-    private static JButton reset;
-    private static JButton next;
-    private static JButton previous;
-    private static JButton editEntity;
+    private JButton start;
+    private JButton reset;
+    private JButton next;
+    private JButton previous;
+    private JButton editEntity;
 
     public Display() {}
 
@@ -44,20 +44,18 @@ public class Display extends JFrame implements ActionListener, MouseListener {
 
         productions = new HashMap<>();
 
-        axiom = new JTextField("F f + -");
+        axiom = new JTextField();
         iteration = new JTextField("5", 1);
 
-        production_F = new JTextField("Production F");
-        production_f = new JTextField("Production f");
-        production_Plus = new JTextField("Production +");
-        production_Minus = new JTextField("Production -");
+        production_F = new JTextField();
+        production_f = new JTextField();
+        production_Plus = new JTextField();
+        production_Minus = new JTextField();
 
-        startXPos = new JTextField("Start X Position: " + Util.DEFAULT_ENTITY_POSITION.x);
-        startYPos = new JTextField("Start Y Position: " + Util.DEFAULT_ENTITY_POSITION.y);
-        step = new JTextField("Step Amt: " + Util.ENTITY_STEP);
-        startAngle = new JTextField("Start Angle: " + Util.ENTITY_ANGLE);
-        delta = new JTextField("Delta Angle: " + Util.ENTITY_DELTA);
+        startAngle = new JTextField();
+        delta = new JTextField();
 
+        initializeText();
         setDocuments();
 
         hideButtons = new JCheckBox("Hide Overlay");
@@ -84,9 +82,6 @@ public class Display extends JFrame implements ActionListener, MouseListener {
         panel.add(production_Minus);
         panel.add(production_Plus);
 
-        panel.add(startXPos);
-        panel.add(startYPos);
-        panel.add(step);
         panel.add(startAngle);
         panel.add(delta);
 
@@ -96,6 +91,7 @@ public class Display extends JFrame implements ActionListener, MouseListener {
         panel.add(next);
         panel.add(previous);
         panel.add(editEntity);
+        panel.add(reset);
 
         this.setPreferredSize(dimension);
         this.setResizable(false);
@@ -142,24 +138,6 @@ public class Display extends JFrame implements ActionListener, MouseListener {
         production_Plus.addMouseListener(this);
         production_Plus.setVisible(true);
 
-        startXPos.setBackground(Color.WHITE);
-        startXPos.setSize(Util.ENTITY_DIMENSION);
-        startXPos.setLocation(Util.START_X_POSITION);
-        startXPos.addMouseListener(this);
-        startXPos.setVisible(false);
-
-        startYPos.setBackground(Color.WHITE);
-        startYPos.setSize(Util.ENTITY_DIMENSION);
-        startYPos.setLocation(Util.START_Y_POSITION);
-        startYPos.addMouseListener(this);
-        startYPos.setVisible(false);
-
-        step.setBackground(Color.WHITE);
-        step.setSize(Util.ENTITY_DIMENSION);
-        step.setLocation(Util.STEP_POSITION);
-        step.addMouseListener(this);
-        step.setVisible(false);
-
         startAngle.setBackground(Color.WHITE);
         startAngle.setSize(Util.ENTITY_DIMENSION);
         startAngle.setLocation(Util.START_ANGLE_POSITION);
@@ -202,6 +180,12 @@ public class Display extends JFrame implements ActionListener, MouseListener {
         editEntity.setLocation(Util.EDIT_BUTTON_POSITION);
         editEntity.addActionListener(this);
         editEntity.setVisible(true);
+
+        reset.setBackground(Color.WHITE);
+        reset.setSize(Util.STANDARD_BUTTON_DIMENSION);
+        reset.setLocation(Util.RESET_BUTTON_POSITION);
+        reset.addActionListener(this);
+        reset.setVisible(true);
     }
 
     private void setDocuments() {
@@ -213,9 +197,6 @@ public class Display extends JFrame implements ActionListener, MouseListener {
         ((AbstractDocument) production_Plus.getDocument()).setDocumentFilter(new FractalDocumentFilter());
         ((AbstractDocument) production_Minus.getDocument()).setDocumentFilter(new FractalDocumentFilter());
 
-        ((AbstractDocument) startXPos.getDocument()).setDocumentFilter(new IntegerDocumentFilter());
-        ((AbstractDocument) startYPos.getDocument()).setDocumentFilter(new IntegerDocumentFilter());
-        ((AbstractDocument) step.getDocument()).setDocumentFilter(new IntegerDocumentFilter());
         ((AbstractDocument) startAngle.getDocument()).setDocumentFilter(new IntegerDocumentFilter());
         ((AbstractDocument) delta.getDocument()).setDocumentFilter(new IntegerDocumentFilter());
     }
@@ -236,11 +217,60 @@ public class Display extends JFrame implements ActionListener, MouseListener {
     }
 
     private void hideEntity(boolean isVisible) {
-        startXPos.setVisible(isVisible);
-        startYPos.setVisible(isVisible);
-        step.setVisible(isVisible);
         startAngle.setVisible(isVisible);
         delta.setVisible(isVisible);
+    }
+
+    private void updateProductions() {
+        if (production_F.getText().equals("Production F")) {
+            productions.put("F", "F");
+        } else {
+            productions.put("F", production_F.getText());
+        }
+
+        if (production_f.getText().equals("Production f")) {
+            productions.put("f", "f");
+        } else {
+            productions.put("f", production_f.getText());
+        }
+
+        if (production_Minus.getText().equals("Production -")) {
+            productions.put("-", "-");
+        } else {
+            productions.put("-", production_Minus.getText());
+        }
+
+        if (production_Plus.getText().equals("Production +")) {
+            productions.put("+", "+");
+        } else {
+            productions.put("+", production_Plus.getText());
+        }
+    }
+
+    private void setDisabled(boolean isDisabled) {
+        production_F.setEnabled(!isDisabled);
+        production_f.setEnabled(!isDisabled);
+        production_Plus.setEnabled(!isDisabled);
+        production_Minus.setEnabled(!isDisabled);
+
+        startAngle.setEnabled(!isDisabled);
+        delta.setEnabled(!isDisabled);
+
+        iteration.setEnabled(!isDisabled);
+        axiom.setEnabled(!isDisabled);
+    }
+
+    private void initializeText() {
+        axiom.setText("F f + -");
+        iteration.setText("1");
+
+        production_F.setText("Production F");
+        production_f.setText("Production f");
+        production_Plus.setText("Production +");
+        production_Minus.setText("Production -");
+
+        startAngle.setText("Start Angle: " + Util.ENTITY_ANGLE);
+        delta.setText("Delta Angle: " + Util.ENTITY_DELTA);
     }
 
     @Override
@@ -253,36 +283,31 @@ public class Display extends JFrame implements ActionListener, MouseListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == start) {
+            int startAngleVal;
+            int deltaVal;
+
+            setDisabled(true);
+
             start.setVisible(false);
             next.setVisible(true);
             previous.setVisible(true);
 
-            if (production_F.getText().equals("Production F")) {
-                productions.put("F", "F");
+            updateProductions();
+
+            if (startAngle.getText().equals("Start Angle: " + Util.ENTITY_ANGLE)) {
+                startAngleVal = Util.ENTITY_ANGLE;
             } else {
-                productions.put("F", production_F.getText());
+                startAngleVal = Integer.parseInt(startAngle.getText());
             }
 
-            if (production_f.getText().equals("Production f")) {
-                productions.put("f", "f");
+            if (delta.getText().equals("Delta Angle: " + Util.ENTITY_DELTA)) {
+                deltaVal = Util.ENTITY_DELTA;
             } else {
-                productions.put("f", production_f.getText());
-            }
-
-            if (production_Minus.getText().equals("Production -")) {
-                productions.put("-", "-");
-            } else {
-                productions.put("-", production_Minus.getText());
-            }
-
-            if (production_Plus.getText().equals("Production +")) {
-                productions.put("+", "+");
-            } else {
-                productions.put("+", production_Plus.getText());
+                deltaVal = Integer.parseInt(delta.getText());
             }
 
             PathManager.reset();
-            PathManager.updateEntity(axiom.getText(), iteration.getText());
+            PathManager.updateEntity(axiom.getText(), iteration.getText(), startAngleVal, deltaVal);
         }
 
         if (e.getSource() == next) {
@@ -291,6 +316,20 @@ public class Display extends JFrame implements ActionListener, MouseListener {
 
         if (e.getSource() == previous) {
             PathManager.previous();
+        }
+
+        if (e.getSource() == reset) {
+            PathManager.reset();
+            setDisabled(false);
+
+            //TODO: fix reset text
+//            initializeText();
+
+            if (!start.isVisible()) {
+                next.setVisible(false);
+                previous.setVisible(false);
+                start.setVisible(true);
+            }
         }
 
         if (e.getSource() == hideButtons) {
@@ -325,12 +364,6 @@ public class Display extends JFrame implements ActionListener, MouseListener {
             production_Plus.setText("");
         else if (e.getSource() == production_Minus)
             production_Minus.setText("");
-        else if (e.getSource() == startXPos)
-            startXPos.setText("");
-        else if (e.getSource() == startYPos)
-            startYPos.setText("");
-        else if (e.getSource() == step)
-            step.setText("");
         else if (e.getSource() == startAngle)
             startAngle.setText("");
         else if (e.getSource() == delta)
