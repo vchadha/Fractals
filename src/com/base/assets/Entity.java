@@ -28,40 +28,24 @@ public class Entity {
         alpha -= delta;
     }
 
-    public int getxPos() {
+    public int getXPos() {
         return xPos;
     }
 
-    public void setxPos(int xPos) {
+    public void setXPos(int xPos) {
         this.xPos = xPos;
     }
 
-    public int getyPos() {
+    public int getYPos() {
         return yPos;
     }
 
-    public void setyPos(int yPos) {
+    public void setYPos(int yPos) {
         this.yPos = yPos;
-    }
-
-    public int getStep() {
-        return step;
-    }
-
-    public void setStep(int step) {
-        this.step = step;
-    }
-
-    public int getAlpha() {
-        return alpha;
     }
 
     public void setAlpha(int alpha) {
         this.alpha = alpha;
-    }
-
-    public int getDelta() {
-        return delta;
     }
 
     public void setDelta(int delta) {

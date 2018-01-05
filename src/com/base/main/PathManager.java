@@ -7,12 +7,12 @@ import com.base.utilities.Util;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class PathManager {
+class PathManager {
     private static Entity entity;
     private static int iteration;
     private static int currIter;
     private static ArrayList<String> axioms;
-    public static ArrayList<Line> lines;
+    static ArrayList<Line> lines;
 
     static {
         entity = new Entity(Util.DEFAULT_ENTITY_POSITION.x, Util.DEFAULT_ENTITY_POSITION.y,
@@ -22,7 +22,7 @@ public class PathManager {
         currIter = 0;
     }
 
-    public static void updateEntity(String axiom, String iteration_Str, int startAngle, int delta) {
+    static void updateEntity(String axiom, String iteration_Str, int startAngle, int delta) {
         entity.setAlpha(startAngle);
         entity.setDelta(delta);
 
@@ -32,7 +32,7 @@ public class PathManager {
         move(axiom);
     }
 
-    public static void next(HashMap productions) {
+    static void next(HashMap productions) {
         if (currIter >= iteration)
             return;
 
@@ -51,7 +51,7 @@ public class PathManager {
         move(axiom);
     }
 
-    public static void previous() {
+    static void previous() {
         if (currIter <= 0)
             return;
 
@@ -61,7 +61,7 @@ public class PathManager {
         move(axioms.get(currIter));
     }
 
-    public static void move(String axiom) {
+    private static void move(String axiom) {
         char cmd;
         for (int i = 0; i < axiom.length(); i++) {
             cmd = axiom.charAt(i);
@@ -70,10 +70,10 @@ public class PathManager {
                 entity.move();
             } else if (cmd == 'F') {
                 //Move and add line
-                int oldX = entity.getxPos();
-                int oldY = entity.getyPos();
+                int oldX = entity.getXPos();
+                int oldY = entity.getYPos();
                 entity.move();
-                lines.add(new Line(oldX, oldY, entity.getxPos(), entity.getyPos()));
+                lines.add(new Line(oldX, oldY, entity.getXPos(), entity.getYPos()));
             } else if (cmd == '+') {
                 //Rotate CC
                 entity.rotateCounterClockwise();
@@ -84,10 +84,10 @@ public class PathManager {
         }
     }
 
-    public static void reset() {
+    static void reset() {
         lines.clear();
-        entity.setxPos(Util.DISPLAY_DIMENSION.width / 2);
-        entity.setyPos(Util.DISPLAY_DIMENSION.height / 2);
+        entity.setXPos(Util.DISPLAY_DIMENSION.width / 2);
+        entity.setYPos(Util.DISPLAY_DIMENSION.height / 2);
         entity.setAlpha(90);
     }
 

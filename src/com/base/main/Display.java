@@ -36,9 +36,9 @@ public class Display extends JFrame implements ActionListener, MouseListener {
     private JButton previous;
     private JButton editEntity;
 
-    public Display() {}
+    Display() {}
 
-    public Display(String displayName) {
+    Display(String displayName) {
         this.displayName = displayName;
         panel = new JPanel();
 
@@ -67,7 +67,7 @@ public class Display extends JFrame implements ActionListener, MouseListener {
         editEntity = new JButton("Edit Entity");
     }
 
-    public void init(Dimension dimension) {
+    void init(Dimension dimension) {
         this.setTitle(displayName);
         panel.setBackground(Color.BLACK);
         panel.setLayout(null);
@@ -95,7 +95,7 @@ public class Display extends JFrame implements ActionListener, MouseListener {
 
         this.setPreferredSize(dimension);
         this.setResizable(false);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         this.add(panel);
         this.pack();
@@ -210,7 +210,7 @@ public class Display extends JFrame implements ActionListener, MouseListener {
         production_Plus.setVisible(isVisible);
         production_Minus.setVisible(isVisible);
 
-        if (editEntity.getText() == "Hide Entity")
+        if (editEntity.getText().equals("Hide Entity"))
             hideEntity(isVisible);
 
         editEntity.setVisible(isVisible);
