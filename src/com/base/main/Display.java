@@ -44,8 +44,8 @@ public class Display extends JFrame implements ActionListener, MouseListener {
 
         productions = new HashMap<>();
 
-        axiom = new JTextField("F f - +");
-        iteration = new JTextField("1", 1);
+        axiom = new JTextField("F f + -");
+        iteration = new JTextField("5", 1);
 
         production_F = new JTextField("Production F");
         production_f = new JTextField("Production f");

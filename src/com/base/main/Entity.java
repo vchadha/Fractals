@@ -18,8 +18,8 @@ public class Entity {
     }
 
     public void move() {
-        xPos -= step * Math.cos(Math.toRadians(alpha));
-        yPos -= step * Math.sin(Math.toRadians(alpha));
+        xPos -= step * (int) Math.cos(Math.toRadians(alpha));
+        yPos -= step * (int) Math.sin(Math.toRadians(alpha));
     }
 
     public void rotateClockwise() {
