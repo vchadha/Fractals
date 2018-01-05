@@ -1,19 +1,69 @@
 package com.base.main;
 
-import java.util.ArrayList;
+import com.base.assets.Entity;
+import com.base.assets.Line;
+import com.base.utilities.Util;
 
-public class PathManager {
-    //Should entity be static?
+import java.util.ArrayList;
+import java.util.HashMap;
+
+class PathManager {
     private static Entity entity;
-    public static ArrayList<Line> lines;
+    private static int iteration;
+    private static int currIter;
+    private static int angle;
+    private static ArrayList<String> axioms;
+    static ArrayList<Line> lines;
 
     static {
-        entity = new Entity(Util.DISPLAY_DIMENSION.width / 2, Util.DISPLAY_DIMENSION.height / 2, 50, 90, 90);
+        entity = new Entity(Util.DEFAULT_ENTITY_POSITION.x, Util.DEFAULT_ENTITY_POSITION.y,
+                Util.ENTITY_STEP, Util.ENTITY_ANGLE, Util.ENTITY_DELTA);
+        axioms = new ArrayList<>();
         lines = new ArrayList<>();
+        currIter = 0;
     }
 
-    public static void updateEntity(String axiom) {
-        //TODO: make better lol also change all these to ints not floats
+    static void updateEntity(String axiom, String iteration_Str, int startAngle, int delta) {
+        angle = startAngle;
+        entity.setAlpha(startAngle);
+        entity.setDelta(delta);
+
+        iteration = Integer.parseInt(iteration_Str);
+        axioms.add(axiom);
+
+        move(axiom);
+    }
+
+    static void next(HashMap productions) {
+        if (currIter >= iteration)
+            return;
+
+        resetEntity();
+        currIter++;
+
+        if (currIter < axioms.size()) {
+            if (axioms.get(currIter) != null) {
+                move(axioms.get(currIter));
+                return;
+            }
+        }
+
+        String axiom = updateAxiom(axioms.get(currIter - 1), productions);
+        axioms.add(axiom);
+        move(axiom);
+    }
+
+    static void previous() {
+        if (currIter <= 0)
+            return;
+
+        resetEntity();
+
+        currIter--;
+        move(axioms.get(currIter));
+    }
+
+    private static void move(String axiom) {
         char cmd;
         for (int i = 0; i < axiom.length(); i++) {
             cmd = axiom.charAt(i);
@@ -22,10 +72,10 @@ public class PathManager {
                 entity.move();
             } else if (cmd == 'F') {
                 //Move and add line
-                int oldX = (int) entity.getxPos();
-                int oldY = (int) entity.getyPos();
+                int oldX = entity.getXPos();
+                int oldY = entity.getYPos();
                 entity.move();
-                lines.add(new Line(oldX, oldY, (int) entity.getxPos(), (int) entity.getyPos()));
+                lines.add(new Line(oldX, oldY, entity.getXPos(), entity.getYPos()));
             } else if (cmd == '+') {
                 //Rotate CC
                 entity.rotateCounterClockwise();
@@ -36,14 +86,38 @@ public class PathManager {
         }
     }
 
-    public static void reset() {
+    private static void resetEntity() {
         lines.clear();
-        entity.setxPos(Util.DISPLAY_DIMENSION.width / 2);
-        entity.setyPos(Util.DISPLAY_DIMENSION.height / 2);
-        entity.setAlpha(90);
+
+        entity.setXPos(Util.DEFAULT_ENTITY_POSITION.x);
+        entity.setYPos(Util.DEFAULT_ENTITY_POSITION.y);
+        entity.setAlpha(angle);
     }
 
-    private void addLine(int startX, int startY, int endX, int endY) {
-        lines.add(new Line(startX, startY, endX, endY));
+    static void reset() {
+        axioms.clear();
+        currIter = 0;
+
+        resetEntity();
+    }
+
+    private static String updateAxiom(String axiom, HashMap productions) {
+        StringBuilder builder = new StringBuilder();
+
+        char cmd;
+        for (int i = 0; i < axiom.length(); i++) {
+            cmd = axiom.charAt(i);
+            if (cmd == 'F') {
+                builder.append(productions.get("F"));
+            } else if (cmd == 'f') {
+                builder.append(productions.get("f"));
+            } else if (cmd == '+') {
+                builder.append(productions.get("+"));
+            } else {
+                builder.append(productions.get("-"));
+            }
+        }
+
+        return builder.toString();
     }
 }

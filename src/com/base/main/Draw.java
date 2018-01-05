@@ -1,10 +1,13 @@
 package com.base.main;
 
-import java.awt.*;
+import com.base.assets.Line;
 
-public class Draw extends Display {
+import java.awt.Color;
+import java.awt.Graphics;
 
-    protected static void draw(Graphics g) {
+class Draw extends Display {
+
+    static void draw(Graphics g) {
         g.setColor(Color.RED);
 
         for (Line line : PathManager.lines) {
