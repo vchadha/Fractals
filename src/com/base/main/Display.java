@@ -10,7 +10,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.HashMap;
 
-//TODO: have dynamic resizing using shifts; Improve efficiency in fractal patterns by repeating tiles?
+//TODO: have dynamic resizing using shifts
 public class Display extends JFrame implements ActionListener, MouseListener {
     private String displayName;
     private JPanel panel;
@@ -44,18 +44,17 @@ public class Display extends JFrame implements ActionListener, MouseListener {
 
         productions = new HashMap<>();
 
-        axiom = new JTextField();
+        axiom = new JTextField("F f + -");
         iteration = new JTextField("5", 1);
 
-        production_F = new JTextField();
-        production_f = new JTextField();
-        production_Plus = new JTextField();
-        production_Minus = new JTextField();
+        production_F = new JTextField("Production F");
+        production_f = new JTextField("Production f");
+        production_Plus = new JTextField("Production +");
+        production_Minus = new JTextField("Production -");
 
-        startAngle = new JTextField();
-        delta = new JTextField();
+        startAngle = new JTextField("Start Angle: " + Util.ENTITY_ANGLE);
+        delta = new JTextField("Delta Angle: " + Util.ENTITY_DELTA);
 
-        initializeText();
         setDocuments();
 
         hideButtons = new JCheckBox("Hide Overlay");
@@ -71,8 +70,6 @@ public class Display extends JFrame implements ActionListener, MouseListener {
         this.setTitle(displayName);
         panel.setBackground(Color.BLACK);
         panel.setLayout(null);
-
-        initializeFields();
 
         panel.add(axiom);
         panel.add(iteration);
@@ -99,6 +96,9 @@ public class Display extends JFrame implements ActionListener, MouseListener {
 
         this.add(panel);
         this.pack();
+
+        initializeFields();
+
         this.setVisible(true);
         this.setLocationRelativeTo(null);
     }
@@ -260,19 +260,6 @@ public class Display extends JFrame implements ActionListener, MouseListener {
         axiom.setEnabled(!isDisabled);
     }
 
-    private void initializeText() {
-        axiom.setText("F f + -");
-        iteration.setText("1");
-
-        production_F.setText("Production F");
-        production_f.setText("Production f");
-        production_Plus.setText("Production +");
-        production_Minus.setText("Production -");
-
-        startAngle.setText("Start Angle: " + Util.ENTITY_ANGLE);
-        delta.setText("Delta Angle: " + Util.ENTITY_DELTA);
-    }
-
     @Override
     public void paint(Graphics g) {
         super.paint(g);
@@ -321,9 +308,6 @@ public class Display extends JFrame implements ActionListener, MouseListener {
         if (e.getSource() == reset) {
             PathManager.reset();
             setDisabled(false);
-
-            //TODO: fix reset text
-//            initializeText();
 
             if (!start.isVisible()) {
                 next.setVisible(false);

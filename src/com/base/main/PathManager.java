@@ -11,6 +11,7 @@ class PathManager {
     private static Entity entity;
     private static int iteration;
     private static int currIter;
+    private static int angle;
     private static ArrayList<String> axioms;
     static ArrayList<Line> lines;
 
@@ -23,6 +24,7 @@ class PathManager {
     }
 
     static void updateEntity(String axiom, String iteration_Str, int startAngle, int delta) {
+        angle = startAngle;
         entity.setAlpha(startAngle);
         entity.setDelta(delta);
 
@@ -36,7 +38,7 @@ class PathManager {
         if (currIter >= iteration)
             return;
 
-        reset();
+        resetEntity();
         currIter++;
 
         if (currIter < axioms.size()) {
@@ -55,7 +57,7 @@ class PathManager {
         if (currIter <= 0)
             return;
 
-        reset();
+        resetEntity();
 
         currIter--;
         move(axioms.get(currIter));
@@ -84,11 +86,19 @@ class PathManager {
         }
     }
 
-    static void reset() {
+    private static void resetEntity() {
         lines.clear();
-        entity.setXPos(Util.DISPLAY_DIMENSION.width / 2);
-        entity.setYPos(Util.DISPLAY_DIMENSION.height / 2);
-        entity.setAlpha(90);
+
+        entity.setXPos(Util.DEFAULT_ENTITY_POSITION.x);
+        entity.setYPos(Util.DEFAULT_ENTITY_POSITION.y);
+        entity.setAlpha(angle);
+    }
+
+    static void reset() {
+        axioms.clear();
+        currIter = 0;
+
+        resetEntity();
     }
 
     private static String updateAxiom(String axiom, HashMap productions) {
