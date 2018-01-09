@@ -8,9 +8,9 @@ import javax.swing.*;
 import javax.swing.text.AbstractDocument;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 import java.util.HashMap;
 
-//TODO: have dynamic resizing using shifts
 public class Display extends JFrame implements ActionListener, MouseListener {
     private String displayName;
     private JPanel panel;
@@ -30,6 +30,7 @@ public class Display extends JFrame implements ActionListener, MouseListener {
 
     private JCheckBox hideButtons;
 
+    //TODO: set enable for next and prevss
     private JButton start;
     private JButton reset;
     private JButton next;
@@ -92,7 +93,7 @@ public class Display extends JFrame implements ActionListener, MouseListener {
 
         this.setPreferredSize(dimension);
         this.setResizable(false);
-        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         this.add(panel);
         this.pack();
@@ -264,7 +265,12 @@ public class Display extends JFrame implements ActionListener, MouseListener {
     public void paint(Graphics g) {
         super.paint(g);
 
-        Draw.draw(g);
+        try {
+            Draw.draw(g);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(-1);
+        }
     }
 
     @Override

@@ -7,8 +7,8 @@ public class Util {
     static final String DOCUMENT_FILTER = "Ff-+";
     static final String DIGITS = "0123456789";
 
-    private static final int PADDING = 20;
     private static final int Y_OFFSET = 30;
+    public static final int PADDING = 20;
 
     public static final Dimension DISPLAY_DIMENSION = new Dimension(800, 800);
     public static final Dimension STANDARD_BUTTON_DIMENSION = new Dimension(100, 30);
@@ -52,7 +52,7 @@ public class Util {
 
     public static final Point DEFAULT_ENTITY_POSITION = new Point(DISPLAY_DIMENSION.width / 2, DISPLAY_DIMENSION.height / 2);
     public static final int ENTITY_ANGLE = 90;
-    public static final int ENTITY_STEP = 20;
+    public static final int ENTITY_STEP = 5;
     public static final int ENTITY_DELTA = 90;
 
 }
