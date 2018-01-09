@@ -44,11 +44,11 @@ class Draw extends Display {
                     line.getEndX() - shiftX, line.getEndY() - shiftY);
         }
 
-        ImageIO.write(bi, "PNG", new File("res/AXIOM_" + PathManager.getCurrIter() + ".png"));
+        ImageIO.write(bi, "PNG", new File("res/AXIOM_" + PathManager.getCurrIter() + turns + ".png"));
     }
 
     private static void loadImage() {
-        ImageIcon imageIcon = new ImageIcon("res/Axiom_" + PathManager.getCurrIter() + ".png");
+        ImageIcon imageIcon = new ImageIcon("res/Axiom_" + PathManager.getCurrIter() + turns + ".png");
 
         float imgWidth = imageIcon.getIconWidth();
         float imgHeight = imageIcon.getIconHeight();

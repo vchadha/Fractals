@@ -32,15 +32,27 @@ public class Display extends JFrame implements ActionListener, MouseListener {
     private JCheckBox hideButtons;
 
     private JButton start;
-    //TODO: fix reset
     private JButton reset;
     private JButton editEntity;
     private static JButton next;
     private static JButton previous;
 
+    static int turns;
+
     Display() {}
 
     Display(String displayName) {
+        turns = 0;
+
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                super.windowClosing(e);
+
+                Main.deleteImages(new File("res/"));
+            }
+        });
+
         this.displayName = displayName;
         panel = new JPanel();
 
@@ -94,7 +106,7 @@ public class Display extends JFrame implements ActionListener, MouseListener {
 
         this.setPreferredSize(dimension);
         this.setResizable(false);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         this.add(panel);
         this.pack();
@@ -328,6 +340,7 @@ public class Display extends JFrame implements ActionListener, MouseListener {
         }
 
         if (e.getSource() == reset) {
+            turns++;
             PathManager.reset();
             setDisabled(false);
 
