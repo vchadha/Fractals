@@ -1,9 +1,14 @@
 package com.base.main;
 
 import com.base.assets.Entity;
+import com.base.assets.Image;
 import com.base.assets.Line;
 import com.base.utilities.Util;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -12,15 +17,22 @@ class PathManager {
     private static int iteration;
     private static int currIter;
     private static int angle;
-    private static ArrayList<String> axioms;
+    //TODO: do i need these bools?
+    private static boolean imgExists;
+    private static boolean started;
+    private static String currAxiom;
     static ArrayList<Line> lines;
+    static ArrayList<com.base.assets.Image> images;
 
     static {
         entity = new Entity(Util.DEFAULT_ENTITY_POSITION.x, Util.DEFAULT_ENTITY_POSITION.y,
                 Util.ENTITY_STEP, Util.ENTITY_ANGLE, Util.ENTITY_DELTA);
-        axioms = new ArrayList<>();
+        currAxiom = "";
         lines = new ArrayList<>();
+        images = new ArrayList<>();
         currIter = 0;
+        imgExists = false;
+        started = false;
     }
 
     static void updateEntity(String axiom, String iteration_Str, int startAngle, int delta) {
@@ -29,28 +41,30 @@ class PathManager {
         entity.setDelta(delta);
 
         iteration = Integer.parseInt(iteration_Str);
-        axioms.add(axiom);
+        currAxiom = axiom;
 
         move(axiom);
+
+        started = true;
     }
 
     static void next(HashMap productions) {
         if (currIter >= iteration)
             return;
 
+        started = true;
         resetEntity();
         currIter++;
 
-        if (currIter < axioms.size()) {
-            if (axioms.get(currIter) != null) {
-                move(axioms.get(currIter));
-                return;
-            }
+        File img = new File("res/AXIOM_" + currIter + ".png");
+        if (!img.exists()) {
+            currAxiom = updateAxiom(currAxiom, productions);
+            move(currAxiom);
+            imgExists = false;
+            return;
         }
 
-        String axiom = updateAxiom(axioms.get(currIter - 1), productions);
-        axioms.add(axiom);
-        move(axiom);
+        imgExists = true;
     }
 
     static void previous() {
@@ -60,7 +74,43 @@ class PathManager {
         resetEntity();
 
         currIter--;
-        move(axioms.get(currIter));
+        imgExists = true;
+        started = true;
+    }
+
+    static void reset() {
+        currAxiom = "";
+        currIter = 0;
+
+        resetEntity();
+    }
+
+    static int getCurrIter() {
+        return currIter;
+    }
+
+    static int getXDist() {
+        return entity.getXDist();
+    }
+
+    static int getYDist() {
+        return entity.getYDist();
+    }
+
+    static int getXMin() {
+        return entity.getXMin();
+    }
+
+    static int getYMin() {
+        return entity.getYMin();
+    }
+
+    static boolean hasImage() {
+        return imgExists;
+    }
+
+    static boolean hasStarted() {
+        return started;
     }
 
     private static void move(String axiom) {
@@ -92,13 +142,7 @@ class PathManager {
         entity.setXPos(Util.DEFAULT_ENTITY_POSITION.x);
         entity.setYPos(Util.DEFAULT_ENTITY_POSITION.y);
         entity.setAlpha(angle);
-    }
-
-    static void reset() {
-        axioms.clear();
-        currIter = 0;
-
-        resetEntity();
+        entity.resetDist();
     }
 
     private static String updateAxiom(String axiom, HashMap productions) {
