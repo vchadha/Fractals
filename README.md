@@ -5,10 +5,10 @@ L -Systems test
 ### Fields
 #### Axiom (bottom left text field)
   * Valid Inputs
-    * F : Move forward and draw line
-    * f : Move forward, but do not draw a line
-    * + : Rotate counter clockwise by angle delta value
-    * - : Rotate clockwise by angle delta value
+    * "F" : Move forward and draw line
+    * "f" : Move forward, but do not draw a line
+    * "+" : Rotate counter clockwise by angle delta value
+    * "-" : Rotate clockwise by angle delta value
 
 #### Iterations (Field above axiom)
   * Valid inputs: integers
