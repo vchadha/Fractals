@@ -1,13 +1,9 @@
 package com.base.main;
 
 import com.base.assets.Entity;
-import com.base.assets.Image;
 import com.base.assets.Line;
 import com.base.utilities.Util;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;

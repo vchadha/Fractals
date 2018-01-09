@@ -8,20 +8,15 @@ public class Main {
     private static Display display = new Display("Fractals");
 
     public static void main (String[] args) {
-        deleteImages();
+        File dir = new File("res/");
+        deleteImages(dir);
+
         display.init(Util.DISPLAY_DIMENSION);
     }
 
-    //TODO: fix this
-    private static void deleteImages() {
-        int iter = 0;
-        File img = new File("res/AXIOM_" + iter + ".png");
-
-        while (img.exists()) {
-            img.delete();
-            iter++;
-
-            img = new File("res/AXIOM_" + iter + ".png");
-        }
+    private static void deleteImages(File dir) {
+        for(File file: dir.listFiles())
+            if (!file.isDirectory())
+                file.delete();
     }
 }
