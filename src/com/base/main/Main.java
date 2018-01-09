@@ -14,7 +14,7 @@ public class Main {
         display.init(Util.DISPLAY_DIMENSION);
     }
 
-    private static void deleteImages(File dir) {
+    static void deleteImages(File dir) {
         for(File file: dir.listFiles())
             if (!file.isDirectory())
                 file.delete();

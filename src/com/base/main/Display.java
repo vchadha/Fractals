@@ -8,6 +8,7 @@ import javax.swing.*;
 import javax.swing.text.AbstractDocument;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -30,23 +31,35 @@ public class Display extends JFrame implements ActionListener, MouseListener {
 
     private JCheckBox hideButtons;
 
-    //TODO: set enable for next and prevss
     private JButton start;
     private JButton reset;
-    private JButton next;
-    private JButton previous;
     private JButton editEntity;
+    private static JButton next;
+    private static JButton previous;
+
+    static int turns;
 
     Display() {}
 
     Display(String displayName) {
+        turns = 0;
+
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                super.windowClosing(e);
+
+                Main.deleteImages(new File("res/"));
+            }
+        });
+
         this.displayName = displayName;
         panel = new JPanel();
 
         productions = new HashMap<>();
 
         axiom = new JTextField("F f + -");
-        iteration = new JTextField("5", 1);
+        iteration = new JTextField("4", 1);
 
         production_F = new JTextField("Production F");
         production_f = new JTextField("Production f");
@@ -93,7 +106,7 @@ public class Display extends JFrame implements ActionListener, MouseListener {
 
         this.setPreferredSize(dimension);
         this.setResizable(false);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         this.add(panel);
         this.pack();
@@ -261,6 +274,22 @@ public class Display extends JFrame implements ActionListener, MouseListener {
         axiom.setEnabled(!isDisabled);
     }
 
+    static void setNextEnabled(boolean isEnabled) {
+        next.setEnabled(isEnabled);
+    }
+
+    static void setPreviousEnabled(boolean isEnabled) {
+        previous.setEnabled(isEnabled);
+    }
+
+    static boolean isNextEnabled() {
+        return next.isEnabled();
+    }
+
+    static boolean isPrevEnabled() {
+        return previous.isEnabled();
+    }
+
     @Override
     public void paint(Graphics g) {
         super.paint(g);
@@ -299,7 +328,6 @@ public class Display extends JFrame implements ActionListener, MouseListener {
                 deltaVal = Integer.parseInt(delta.getText());
             }
 
-            PathManager.reset();
             PathManager.updateEntity(axiom.getText(), iteration.getText(), startAngleVal, deltaVal);
         }
 
@@ -312,8 +340,12 @@ public class Display extends JFrame implements ActionListener, MouseListener {
         }
 
         if (e.getSource() == reset) {
+            turns++;
             PathManager.reset();
             setDisabled(false);
+
+            Main.deleteImages(new File("res/"));
+            Display.setNextEnabled(true);
 
             if (!start.isVisible()) {
                 next.setVisible(false);
