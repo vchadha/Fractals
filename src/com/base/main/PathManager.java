@@ -13,7 +13,6 @@ class PathManager {
     private static int iteration;
     private static int currIter;
     private static int angle;
-    //TODO: do i need these bools?
     private static boolean imgExists;
     private static boolean started;
     private static String currAxiom;
@@ -32,6 +31,7 @@ class PathManager {
     }
 
     static void updateEntity(String axiom, String iteration_Str, int startAngle, int delta) {
+        Display.setPreviousEnabled(false);
         angle = startAngle;
         entity.setAlpha(startAngle);
         entity.setDelta(delta);
@@ -42,11 +42,21 @@ class PathManager {
         move(axiom);
 
         started = true;
+        imgExists = false;
     }
 
     static void next(HashMap productions) {
-        if (currIter >= iteration)
+        if (currIter >= iteration) {
             return;
+        }
+
+        if (currIter == iteration - 1) {
+            Display.setNextEnabled(false);
+        }
+
+        if (!Display.isPrevEnabled()) {
+            Display.setPreviousEnabled(true);
+        }
 
         started = true;
         resetEntity();
@@ -64,8 +74,17 @@ class PathManager {
     }
 
     static void previous() {
-        if (currIter <= 0)
+        if (currIter <= 0) {
             return;
+        }
+
+        if (currIter <= 1) {
+            Display.setPreviousEnabled(false);
+        }
+
+        if (!Display.isNextEnabled()) {
+            Display.setNextEnabled(true);
+        }
 
         resetEntity();
 
@@ -75,9 +94,11 @@ class PathManager {
     }
 
     static void reset() {
+        started = false;
         currAxiom = "";
         currIter = 0;
 
+        images.clear();
         resetEntity();
     }
 
