@@ -62,7 +62,7 @@ class PathManager {
         resetEntity();
         currIter++;
 
-        File img = new File("res/AXIOM_" + currIter + ".png");
+        File img = new File("res/AXIOM_" + currIter + Display.turns + ".png");
         if (!img.exists()) {
             currAxiom = updateAxiom(currAxiom, productions);
             move(currAxiom);
