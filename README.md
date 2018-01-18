@@ -28,3 +28,14 @@ L -Systems test
 
 #### Edit Entity
   * Allows user to edit start angle and angle delta value
+
+## Installation
+```
+  1. Navigate to local repository
+  2. Create res/ folder
+  3. Create a bin/ folder
+  4. Run cmd: find -name "*.java" > source.txt
+  5. Run cmd: javac -d ./bin @source.txt
+  6. Cd into bin/
+  7. Run cmd: jar cvfm ../Fractals.jar ../manifest.txt com/ ../res/
+```
