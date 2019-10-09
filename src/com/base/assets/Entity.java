@@ -29,8 +29,8 @@ public class Entity {
     }
 
     public void move() {
-        xPos -= step * (int) Math.cos(Math.toRadians(alpha));
-        yPos -= step * (int) Math.sin(Math.toRadians(alpha));
+        xPos -= Math.ceil( step * Math.cos( Math.toRadians( alpha ) ) );
+        yPos -= Math.ceil( step * Math.sin( Math.toRadians( alpha) ) );
 
         if (xPos < xMin)
             xMin = xPos;
